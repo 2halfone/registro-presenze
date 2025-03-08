@@ -11,7 +11,6 @@ export default function Login() {
   const [password, setPassword] = useState(""); // Inizializzazione di `password`
   const [error, setError] = useState(""); // Stato per gli errori
   const [qrCode, setQrCode] = useState(""); // Stato per il QR Code
-  const [buttonColor, setButtonColor] = useState("bg-blue-500");
   const [passwordVisible, setPasswordVisible] = useState(false); // Stato per visibilità password
   const router = useRouter();
 
@@ -30,18 +29,17 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError("");
+    setError(""); // Resetta l'errore
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      alert("Login successful!");
       router.push("/dashboard");
     } catch (err) {
-      setError(err.message);
+      setError("The email or password you entered is incorrect. Please check your credentials and try again.");
     }
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
+    <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-blue-400 to-green-300">
       <div className="bg-white p-10 rounded-lg shadow-2xl max-w-sm w-full">
         <h1 className="text-4xl font-semibold text-center text-gray-800 mb-6">Login</h1>
 
@@ -50,24 +48,24 @@ export default function Login() {
           <input
             type="email"
             placeholder="Enter your email"
-            value={email} // Usa la variabile email definita
-            onChange={(e) => setEmail(e.target.value)} // Aggiorna il valore di email
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
             className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder:text-gray-500 text-black"
           />
           
           <div className="relative">
             <input
-              type={passwordVisible ? "text" : "password"} // Cambia il tipo di input per mostrare/nascondere la password
+              type={passwordVisible ? "text" : "password"}
               placeholder="Enter your password"
-              value={password} // Usa la variabile password definita
-              onChange={(e) => setPassword(e.target.value)} // Aggiorna il valore di password
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
               className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 w-full placeholder:text-gray-500 text-black"
             />
             <button
               type="button"
-              onClick={() => setPasswordVisible(!passwordVisible)} // Alterna lo stato per mostrare/nascondere la password
+              onClick={() => setPasswordVisible(!passwordVisible)}
               className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500"
             >
               {passwordVisible ? "👁️" : "🙈"}
@@ -76,9 +74,7 @@ export default function Login() {
           
           <button
             type="submit"
-            className={`py-3 rounded-lg ${buttonColor} hover:bg-blue-700 transition duration-300 ease-in-out text-white font-semibold shadow-md`}
-            onMouseEnter={() => setButtonColor("bg-blue-700")}
-            onMouseLeave={() => setButtonColor("bg-blue-500")}
+            className="py-3 rounded-lg bg-blue-500 text-white font-semibold"
           >
             Login
           </button>
@@ -98,19 +94,15 @@ export default function Login() {
           <p className="mt-3 text-center text-gray-600">Scan the code with your phone to log in automatically.</p>
         </div>
 
-        {/* Reset Password Link */}
-        <div className="mt-4 text-center">
-          <a
-            href="/reset-password"
-            className="text-blue-500 hover:underline"
-          >
+        {/* Links: Reset password and Register */}
+        <div className="mt-4 text-center flex justify-between">
+          <a href="/reset-password" className="text-blue-500 hover:underline">
             Reset your password
           </a>
+          <a href="/register" className="text-green-500 hover:underline">
+            Register here
+          </a>
         </div>
-
-        <p className="text-center mt-5">
-          Don't have an account? <a href="/register" className="text-blue-500">Register here</a>
-        </p>
       </div>
     </div>
   );
